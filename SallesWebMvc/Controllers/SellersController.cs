@@ -59,5 +59,21 @@ namespace SallesWebMvc.Controllers
             var obj = _sellerService.FindById(id.Value);
             return View(obj);
         }
+
+        public IActionResult Edit(int? id)
+        {
+            var obj = _sellerService.FindById(id.Value);
+            List<Department> departments = _departmentService.FindAll();
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Seller seller)
+        {
+            _sellerService.Update(seller);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
